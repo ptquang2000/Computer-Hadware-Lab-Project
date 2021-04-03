@@ -59,17 +59,18 @@
       </nav>
     </header>
 
-    <section class="content">
+    <section class="content" id="app">
       <h1>Your watering plan</h1>
       <ul class="config-list">  
-        <li>
-          <span class="text">{{ config.month config.date config.year}}</span>
+        <li v-for="config in configs">
+          <span class="text">{{config.month}} {{config.date}},{{config.year}}</span>
           <div>
-            <span class="time">{{ config.start config.stop}}</span>
-            <i class="material-icons del">delete forever</i>
+            <span class="time">{{config.start}} - {{config.stop}}</span>
+            <i class="material-icons del" v-on:click="deleteRequest(config.username, config.id)">delete forever</i>
           </div>
         </li>
       </ul>
+
     </section>
     <!-- vue js -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>

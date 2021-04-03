@@ -64,10 +64,34 @@ registerForm.addEventListener('submit', (e) => {
    // auth listener
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      const username = firebase.auth().currentUser.email.split('@')[0];
-      firebase.database().ref('users/').child(username).on('value', snapshot =>{
-          setupList(snapshot.val());
+      // const username = firebase.auth().currentUser.email.split('@')[0];
+      // firebase.database().ref('users/').child(username).on('value', snapshot =>{
+      //     setupList(snapshot.val());
+      // });
+
+      var app = new Vue({
+        el: '#app',
+        data: {
+          configs: [],
+        },
+        methods: {
+            deleteRequest(username, config_id){
+            firebase.database().ref('users/' + username + '/' + config_id).remove();
+          }
+        },
+        mounted() {
+          let configs = [];
+          const username = firebase.auth().currentUser.email.split('@')[0];
+          firebase.database().ref('users/').child(username).on('value', snapshot =>{
+              Object.entries(snapshot.val()).map(data => {
+                if (!data[0].includes('total') && !data[0].includes('id') && !data[0].includes('username'))
+                  configs.push({...data[1], id: data[0], username: snapshot.val().username});
+              })
+          });
+          this.configs = configs;
+        }
       });
+
       authWrapper.classList.remove('open');
       authModals.forEach(modal => modal.classList.remove('active'));
     } else {
