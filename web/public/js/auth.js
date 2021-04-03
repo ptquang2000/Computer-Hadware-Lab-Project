@@ -21,7 +21,16 @@ registerForm.addEventListener('submit', (e) => {
   
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(user => {
-        console.log('registered', user);
+        console.log('registered', user.user.uid);
+        const username = email.split('@')[0]
+        var newConfig = {
+          'id': user.user.uid,
+          'total': 0,
+          'username': username,
+        };
+        var updates = {};
+        updates['/users/' + username] = newConfig;
+        firebase.database().ref().update(updates);
         registerForm.reset();
       })
       .catch(error => {
@@ -52,7 +61,7 @@ registerForm.addEventListener('submit', (e) => {
       .then(() => console.log('signed out'));
   });
   
-  // auth listener
+   // auth listener
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       const username = firebase.auth().currentUser.email.split('@')[0];

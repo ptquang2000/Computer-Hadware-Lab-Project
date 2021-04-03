@@ -59,19 +59,20 @@
       </nav>
     </header>
 
-    <section class="content" id="app">
+    <section class="content">
       <h1>Your watering plan</h1>
       <ul class="config-list">  
         <li>
-          <span class="text">Month Day Year</span>
+          <span class="text">{{ config.month config.date config.year}}</span>
           <div>
-            <span class="time">start stop</span>
+            <span class="time">{{ config.start config.stop}}</span>
             <i class="material-icons del">delete forever</i>
           </div>
         </li>
       </ul>
     </section>
-
+    <!-- vue js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <!-- update the version number as needed -->
     <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
