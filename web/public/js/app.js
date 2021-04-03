@@ -16,32 +16,32 @@ configForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     
     const username = firebase.auth().currentUser.email.split('@')[0];
-    firebase.database().ref('users/' + username).child('numofconfig').get().then(function(snapshot) {
+    firebase.database().ref('users/' + username).child('total').get().then(function(snapshot) {
         if (snapshot.exists()) {
 
-            var confignum = snapshot.val();
+            var total = snapshot.val();
             var newConfig = {
-                '0': configForm.month.value,
-                '1': configForm.date.value,
-                '2': configForm.year.value,
-                '3': configForm.start.value,
-                '4': configForm.stop.value,
+                'month': configForm.month.value,
+                'date': configForm.date.value,
+                'year': configForm.year.value,
+                'start': configForm.start.value,
+                'stop': configForm.stop.value,
             };
             var updates = {};
-            var newPostKey = 'config' + confignum.toString();
-            updates['/users/' + username + '/' + newPostKey] = newConfig;
-            updates['/users/' + username + '/numofconfig'] = confignum + 1;    
+            updates['/users/' + username + '/config' + total] = newConfig;
+            updates['/users/' + username + '/total'] = total + 1;    
         
             firebase.database().ref().update(updates);
             configForm.reset();
             configModal.classList.remove('open');
+            configForm.querySelector('.error').textContent = '';
 
         }
         else {
-            console.log("No data available");
+            configForm.querySelector('.error').textContent = "No data available";
         }
         }).catch(function(error) {
-            console.error(error);
+            configForm.querySelector('.error').textContent = error;
     });
     
 })

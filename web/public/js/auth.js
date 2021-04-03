@@ -55,6 +55,10 @@ registerForm.addEventListener('submit', (e) => {
   // auth listener
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
+      const username = firebase.auth().currentUser.email.split('@')[0];
+      firebase.database().ref('users/').child(username).on('value', snapshot =>{
+          setupList(snapshot.val());
+      });
       authWrapper.classList.remove('open');
       authModals.forEach(modal => modal.classList.remove('active'));
     } else {
