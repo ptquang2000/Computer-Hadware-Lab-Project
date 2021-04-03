@@ -9,11 +9,11 @@ const setupList = (datas) => {
         let html = ``;
         console.log(configs);
         configs.forEach(config =>{
-            html += `<li id="${config.id}">
+            html += `<li id-config="${config.id}">
             <span class="text">${config.month} ${config.date},${config.year}</span>
             <div>
               <span class="time">${config.start}-${config.stop}</span>
-              <i class="material-icons del">delete</i>
+              <button id-config="${config.id}" >delete</buton>
             </div>
           </li>`;
         })
