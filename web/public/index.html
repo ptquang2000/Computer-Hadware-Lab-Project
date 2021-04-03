@@ -11,39 +11,64 @@
 
   </head>
   <body>
-      <!-- new request modal -->
-      <div class="new-config">
-        <div class="modal">
-          <h2>Set up your pumper timer</h2>
-          <form>
-            <input type="text" name="Date" placeholder="Config Date...">
-            <input type="text" name="Time" placeholder="Config Time...">
-            <button>Submit config</button>
-            <p class="error"></p>
-          </form>
-        </div>
-      </div>
-      
-      <header>
-        <nav>
-          <a class="add-config">add config</a>
-          <a class="sign-out">sign out</a>
-        </nav>
-      </header>
 
-      <section class="content">
-        <h1>Tutorial Requests</h1>
-        <ul class="config-list"> 
-          <li>
-            <span class="text">April 3rd, 2021</span>
-            <div>
-              <span class="time">08:00 AM</span>
-              <i class="material-icons del">delete</i>
-            </div>
-          </li>
-        </ul>
-      </section>
+    <!-- auth modals -->
+    <div class="auth open">
+      <div class="modal active">
+        <h2>Login</h2>
+        <form class="login">
+          <input type="text" name="email" placeholder="Email">
+          <input type="password" name="password" placeholder="Password">
+          <button>Login</button>
+          <p class="error"></p>
+        </form>
+        <div>No account? <a class="switch">Register instead</a></div>
+      </div>
+      <div class="modal">
+        <h2>Register</h2>
+        <form class="register">
+          <input type="text" name="email" placeholder="Email">
+          <input type="password" name="password" placeholder="Password">
+          <button>Register</button>
+          <p class="error"></p>
+        </form>
+        <div>Got an account? <a class="switch">Login instead</a></div>
+      </div>
+    </div>
+
+    <!-- new config modal -->
+    <div class="new-config">
+      <div class="modal">
+        <h2>Set up your pumper timer</h2>
+        <form>
+          <input type="text" name="Date" placeholder="Config Date...">
+          <input type="text" name="Time" placeholder="Config Time...">
+          <button>Submit config</button>
+          <p class="error"></p>
+        </form>
+      </div>
+    </div>
     
+    <header>
+      <nav>
+        <a class="add-config">add config</a>
+        <a class="sign-out">sign out</a>
+      </nav>
+    </header>
+
+    <section class="content">
+      <h1>Tutorial Requests</h1>
+      <ul class="config-list"> 
+        <li>
+          <span class="text">April 3rd, 2021</span>
+          <div>
+            <span class="time">08:00 AM</span>
+            <i class="material-icons del">delete</i>
+          </div>
+        </li>
+      </ul>
+    </section>
+  
     <!-- update the version number as needed -->
     <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
@@ -67,5 +92,6 @@
     </script>
 
     <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
   </body>
 </html>
