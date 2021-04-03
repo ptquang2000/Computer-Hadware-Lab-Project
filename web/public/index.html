@@ -12,86 +12,86 @@
   </head>
   <body>
 
-    <!-- auth modals -->
-    <div class="auth open">
-      <div class="modal active">
-        <h2>Login</h2>
-        <form class="login">
-          <input type="text" name="email" placeholder="Email">
-          <input type="password" name="password" placeholder="Password">
-          <button>Login</button>
-          <p class="error"></p>
-        </form>
-        <div>No account? <a class="switch">Register instead</a></div>
-      </div>
-      <div class="modal">
-        <h2>Register</h2>
-        <form class="register">
-          <input type="text" name="email" placeholder="Email">
-          <input type="password" name="password" placeholder="Password">
-          <button>Register</button>
-          <p class="error"></p>
-        </form>
-        <div>Got an account? <a class="switch">Login instead</a></div>
-      </div>
-    </div>
+		<!-- auth modals -->
+		<div class="auth open">
+			<div class="modal active">
+				<h2>Login</h2>
+				<form class="login">
+					<input type="text" name="email" placeholder="Email">
+					<input type="password" name="password" placeholder="Password">
+					<button>Login</button>
+					<p class="error"></p>
+				</form>
+				<div>No account? <a class="switch">Register instead</a></div>
+			</div>
+			<div class="modal">
+				<h2>Register</h2>
+				<form class="register">
+					<input type="text" name="email" placeholder="Email">
+					<input type="password" name="password" placeholder="Password">
+					<button>Register</button>
+					<p class="error"></p>
+				</form>
+				<div>Got an account? <a class="switch">Login instead</a></div>
+			</div>
+		</div>
 
-    <!-- new config modal -->
-    <div class="new-config">
-      <div class="modal">
-        <h2>Set up your pumper timer</h2>
-        <form>
-          <input type="text" name="date" placeholder="Choose date...">
-          <input type="text" name="timeset" placeholder="Choose time start...">
-          <input type="text" name="duration" placeholder="Choose duration...">
-          <button>Submit config</button>
-          <p class="error"></p>
-        </form>
-      </div>
-    </div>
-    
-    <header>
-      <nav>
-        <a class="add-config">add config</a>
-        <a class="sign-out">sign out</a>
-      </nav>
-    </header>
+		<!-- new config modal -->
+		<div class="new-config">
+			<div class="modal">
+				<h2>Set up your pumper timer</h2>
+				<form>
+					<input type="text" name="date" placeholder="Choose date...">
+					<input type="text" name="timeset" placeholder="Choose time start...">
+					<input type="text" name="duration" placeholder="Choose duration...">
+					<button>Submit config</button>
+					<p class="error"></p>
+				</form>
+			</div>
+		</div>
+		
+		<header>
+			<nav>
+				<a class="add-config">add config</a>
+				<a class="sign-out">sign out</a>
+			</nav>
+		</header>
 
-    <section class="content">
-      <h1>Your watering plan</h1>
-      <ul class="config-list">  
-        <li>
-          <span class="text">{{config.date}} {{config.timeset}}</span>
-          <div>
-            <span class="time">{{config.duration}}</span>
-            <i class="material-icons del">delete forever</i>
-          </div>
-        </li>
-      </ul>
+		<section class="content">
+			<h1>Your watering plan</h1>
+			<ul class="config-list">  
+				<li>
+					<span class="text">{{config.date}} {{config.timeset}}</span>
+					<div>
+						<span class="time">{{config.duration}}</span>
+						<i class="material-icons del">delete forever</i>
+					</div>
+				</li>
+			</ul>
 
-    </section>
-    <!-- update the version number as needed -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-auth.js"></script>
+		</section>
+		<!-- update the version number as needed -->
+		<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
+		<!-- include only the Firebase features as you need -->
+		<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-auth.js"></script>
 
-    <script>
-      const firebaseConfig = {
-        apiKey: "AIzaSyB_zu-rVb6E1lGinalWvVw9pAZ6aSMa9DQ",
-        authDomain: "watering-plant-system.firebaseapp.com",
-        databaseURL: "https://watering-plant-system-default-rtdb.firebaseio.com",
-        projectId: "watering-plant-system",
-        storageBucket: "watering-plant-system.appspot.com",
-        messagingSenderId: "1055975309731",
-        appId: "1:1055975309731:web:1d0550fa620a987cae5a16",
-        measurementId: "G-DDGFWZLG30"
-      };
-      firebase.initializeApp(firebaseConfig);
-    </script>
+		<script>
+			const firebaseConfig = {
+				apiKey: "AIzaSyB_zu-rVb6E1lGinalWvVw9pAZ6aSMa9DQ",
+				authDomain: "watering-plant-system.firebaseapp.com",
+				databaseURL: "https://watering-plant-system-default-rtdb.firebaseio.com",
+				projectId: "watering-plant-system",
+				storageBucket: "watering-plant-system.appspot.com",
+				messagingSenderId: "1055975309731",
+				appId: "1:1055975309731:web:1d0550fa620a987cae5a16",
+				measurementId: "G-DDGFWZLG30"
+			};
+			firebase.initializeApp(firebaseConfig);
+		</script>
 
-    <script src="js/app.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/config.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/auth.js"></script>
+		<script src="js/config.js"></script>
   </body>
 </html>
