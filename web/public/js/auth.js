@@ -21,11 +21,10 @@ registerForm.addEventListener('submit', (e) => {
   
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(user => {
-        console.log('registered', user.user.uid);
+        console.log('registered', user);
         const username = email.split('@')[0]
         var newConfig = {
           'id': user.user.uid,
-          'total': 0,
           'username': username,
         };
         var updates = {};
@@ -64,32 +63,9 @@ registerForm.addEventListener('submit', (e) => {
    // auth listener
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      // const username = firebase.auth().currentUser.email.split('@')[0];
-      // firebase.database().ref('users/').child(username).on('value', snapshot =>{
-      //     setupList(snapshot.val());
-      // });
-
-      var app = new Vue({
-        el: '#app',
-        data: {
-          configs: [],
-        },
-        methods: {
-            deleteRequest(username, config_id){
-            firebase.database().ref('users/' + username + '/' + config_id).remove();
-          }
-        },
-        mounted() {
-          let configs = [];
-          const username = firebase.auth().currentUser.email.split('@')[0];
-          firebase.database().ref('users/').child(username).on('value', snapshot =>{
-              Object.entries(snapshot.val()).map(data => {
-                if (!data[0].includes('total') && !data[0].includes('id') && !data[0].includes('username'))
-                  configs.push({...data[1], id: data[0], username: snapshot.val().username});
-              })
-          });
-          this.configs = configs;
-        }
+      const username = firebase.auth().currentUser.email.split('@')[0];
+      firebase.database().ref('users/').child(username).on('value', snapshot =>{
+          setupList(snapshot.val());
       });
 
       authWrapper.classList.remove('open');

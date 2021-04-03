@@ -41,11 +41,9 @@
       <div class="modal">
         <h2>Set up your pumper timer</h2>
         <form>
-          <input type="text" name="month" placeholder="Choose month...">
           <input type="text" name="date" placeholder="Choose date...">
-          <input type="text" name="year" placeholder="Choose year...">
-          <input type="text" name="start" placeholder="Choose time start...">
-          <input type="text" name="stop" placeholder="Choose time stop...">
+          <input type="text" name="timeset" placeholder="Choose time start...">
+          <input type="text" name="duration" placeholder="Choose duration...">
           <button>Submit config</button>
           <p class="error"></p>
         </form>
@@ -59,21 +57,19 @@
       </nav>
     </header>
 
-    <section class="content" id="app">
+    <section class="content">
       <h1>Your watering plan</h1>
       <ul class="config-list">  
-        <li v-for="config in configs">
-          <span class="text">{{config.month}} {{config.date}},{{config.year}}</span>
+        <li>
+          <span class="text">{{config.date}} {{config.timeset}}</span>
           <div>
-            <span class="time">{{config.start}} - {{config.stop}}</span>
-            <i class="material-icons del" v-on:click="deleteRequest(config.username, config.id)">delete forever</i>
+            <span class="time">{{config.duration}}</span>
+            <i class="material-icons del">delete forever</i>
           </div>
         </li>
       </ul>
 
     </section>
-    <!-- vue js -->
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <!-- update the version number as needed -->
     <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
