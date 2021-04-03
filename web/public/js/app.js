@@ -27,9 +27,10 @@ configForm.addEventListener('submit', (e)=>{
                 'start': configForm.start.value,
                 'stop': configForm.stop.value,
             };
+            var newPostKey = firebase.database().ref('users/').child(username).push().key;
             var updates = {};
-            updates['/users/' + username + '/config' + total] = newConfig;
             updates['/users/' + username + '/total'] = total + 1;    
+            updates['/users/' + username + '/' + newPostKey] = newConfig;
         
             firebase.database().ref().update(updates);
             configForm.reset();
