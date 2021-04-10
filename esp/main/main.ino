@@ -131,11 +131,12 @@ void loop() {
 					Serial.print(", Duration: ");
 					Serial.println(duration_in_sec);
 
-					if (curtime_in_sec >= start_in_sec && curtime_in_sec <= start_in_sec + duration_in_sec && digitalRead(RELAY) == LOW)
+					if (curtime_in_sec >= start_in_sec && curtime_in_sec <= start_in_sec + duration_in_sec && digitalRead(RELAY) == LOW){
 						digitalWrite(RELAY, HIGH);
-					else if (curtime_in_sec > start_in_sec + duration_in_sec && digitalRead(RELAY) == HIGH)
+					}
+					else if (curtime_in_sec > start_in_sec + duration_in_sec && digitalRead(RELAY) == HIGH){
 						digitalWrite(RELAY, LOW);
-
+					}
 				}
 				json.iteratorEnd();
 

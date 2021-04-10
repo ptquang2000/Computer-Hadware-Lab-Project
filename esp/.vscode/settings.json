@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "xmemory": "cpp",
+        "utility": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp",
+        "functional": "cpp",
+        "type_traits": "cpp",
+        "xtr1common": "cpp"
+    }
+}
