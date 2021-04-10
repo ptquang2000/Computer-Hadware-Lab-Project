@@ -25,6 +25,8 @@ Ticker ticker;
 strDateTime dateTime;
 NTPtime NTPch("ch.pool.ntp.org");  
 
+#define RELAY 4
+
 void tick()
 {
   int state = digitalRead(BUILTIN_LED);  
@@ -39,9 +41,9 @@ void configModeCallback (WiFiManager *myWiFiManager) {
 }
 
 void setup() {
-	
+  pinMode(RELAY, OUTPUT);
+
   Serial.begin(115200);
-	Serial.println();
   Serial.println();
 
   pinMode(BUILTIN_LED, OUTPUT);
@@ -70,6 +72,7 @@ void setup() {
 
   Firebase.begin(&config, &auth);
   Firebase.reconnectWiFi(true);
+
 }
 
 void loop() {
@@ -79,6 +82,7 @@ void loop() {
 	char myTime[20] = "";
 
   if (dateTime.valid){
+		Serial.println();	
 
     byte actualHour = dateTime.hour;      // Gio
     byte actualMinute = dateTime.minute;  // Phut
@@ -89,13 +93,18 @@ void loop() {
 
 		sprintf(myDate, "%04d%02u%02u",actualyear,actualMonth,actualday);
 		sprintf(myTime, "%02uh%02um%02us",actualHour,actualMinute,actualsecond);
+
+		int curtime_in_sec = String(actualHour).toInt() * 3600 + String(actualMinute).toInt() * 60 + String(actualsecond).toInt();
+		Serial.print("Current time: ");
+		Serial.println(curtime_in_sec);
+		
 		//------------------------------------------------------------------------
 		String Path = path + "/" + String(myDate);
 		if (Firebase.RTDB.get(&fbdo, Path.c_str())){
+			Serial.print("Path: ");
 			Serial.println(Path);
 			if (fbdo.dataType() == "json"){
 
-				Serial.println();
 				FirebaseJson &json = fbdo.jsonObject();
 				size_t len = json.iteratorBegin();
 				String key, value = "";
@@ -114,6 +123,18 @@ void loop() {
 					}
 					Serial.print(", Value: ");
 					Serial.println(value);
+
+					int start_in_sec = String(key).substring(0,2).toInt() * 3600 + String(key).substring(3,5).toInt() * 60 + String(key).substring(6,8).toInt();
+					int duration_in_sec = String(value).substring(0,2).toInt() * 3600 + String(value).substring(3,5).toInt() * 60 + String(value).substring(6,8).toInt();
+					Serial.print("Start: ");
+					Serial.print(start_in_sec);
+					Serial.print(", Duration: ");
+					Serial.println(duration_in_sec);
+
+					if (curtime_in_sec >= start_in_sec && curtime_in_sec <= start_in_sec + duration_in_sec && digitalRead(RELAY) == LOW)
+						digitalWrite(RELAY, HIGH);
+					else if (curtime_in_sec > start_in_sec + duration_in_sec && digitalRead(RELAY) == HIGH)
+						digitalWrite(RELAY, LOW);
 
 				}
 				json.iteratorEnd();
