@@ -1,43 +1,33 @@
 #include <FS.h>
 #include <ArduinoJson.h> 
-
 #include <ESP8266WiFi.h>
 #include <Firebase_ESP_Client.h>
-
-#define FIREBASE_HOST "watering-plant-system-default-rtdb.firebaseio.com"
-#define API_KEY "AIzaSyB_zu-rVb6E1lGinalWvVw9pAZ6aSMa9DQ"
-
-FirebaseData fbdo;
-
-FirebaseAuth auth;
-FirebaseConfig config;
-
-String path = "users/";
-
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>        
-
 #include <Ticker.h>
-Ticker ticker;
-
 #include <NTPtimeESP.h>
-strDateTime dateTime;
-NTPtime NTPch("ch.pool.ntp.org");  
 
+#define FIREBASE_HOST "watering-plant-system-default-rtdb.firebaseio.com"
+#define API_KEY "AIzaSyB_zu-rVb6E1lGinalWvVw9pAZ6aSMa9DQ"
 #define RELAY 4
 
-bool shouldSaveConfig = false;
+Ticker ticker;
+String path = "users/";
+FirebaseData fbdo;
+FirebaseAuth auth;
+FirebaseConfig config;
 char user_email[40];
 char user_password[40];
+strDateTime dateTime;
+NTPtime NTPch("ch.pool.ntp.org");  
+bool shouldSaveConfig = false;
 
 void saveConfigCallback () {
   Serial.println("Should save config");
   shouldSaveConfig = true;
 }
-
-void tick()
-{
+void tick() {
   int state = digitalRead(BUILTIN_LED);  
   digitalWrite(BUILTIN_LED, !state);  
 }
@@ -242,6 +232,17 @@ void loop() {
 		else {
 			Serial.print("Error in get, ");
 			Serial.println(fbdo.errorReason());
+      if (fbdo.errorReason() == "INVALID_EMAIL" || "INVALID_PASSWORD"){
+        SPIFFS.format();
+        delay(2000);
+        WiFi.disconnect(true);
+        delay(2000);
+        WiFiManager wifiManager;
+        wifiManager.resetSettings();
+        delay(2000);
+        ESP.reset();
+        delay(1000);
+      }
 		}
   }
 }
