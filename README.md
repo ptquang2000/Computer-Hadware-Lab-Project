@@ -1,4 +1,4 @@
 # Computer-Hadware-Lab-Project
 
-user_abc_123@gmail.com -- 123_abc_user 
+<h1>This project is about developping a service which allows customers to control their home pumper through a website.s</h1>
 <br>
