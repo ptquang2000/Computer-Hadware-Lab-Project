@@ -7,15 +7,11 @@
 #define FIREBASE_HOST "watering-plant-system-default-rtdb.firebaseio.com"
 #define API_KEY "AIzaSyB_zu-rVb6E1lGinalWvVw9pAZ6aSMa9DQ"
 
-// #define USER_EMAIL "user_abc_123@gmail.com"
-// #define USER_PASSWORD "123abcuser"
-
 FirebaseData fbdo;
 
 FirebaseAuth auth;
 FirebaseConfig config;
 
-// String path = "users/user_abc_123";
 String path = "users/";
 
 #include <DNSServer.h>
@@ -31,12 +27,10 @@ NTPtime NTPch("ch.pool.ntp.org");
 
 #define RELAY 4
 
-//flag for saving data
 bool shouldSaveConfig = false;
 char user_email[40];
 char user_password[40];
 
-//callback notifying us of the need to save config
 void saveConfigCallback () {
   Serial.println("Should save config");
   shouldSaveConfig = true;
@@ -83,7 +77,7 @@ void setup() {
   ticker.attach(0.6, tick);
 
 	// clean FS, for testing
-  SPIFFS.format();
+  // SPIFFS.format();
 
   //read configuration from FS json
   Serial.println("mounting FS...");
@@ -91,13 +85,13 @@ void setup() {
   if (SPIFFS.begin()) {
     Serial.println("mounted file system");
     if (SPIFFS.exists("/config.json")) {
-      //file exists, reading and loading
+
       Serial.println("reading config file");
       File configFile = SPIFFS.open("/config.json", "r");
       if (configFile) {
         Serial.println("opened config file");
         size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
+
         std::unique_ptr<char[]> buf(new char[size]);
 
         configFile.readBytes(buf.get(), size);
@@ -116,20 +110,18 @@ void setup() {
   } else {
     Serial.println("failed to mount FS");
   }
-  //end read
   
   WiFiManagerParameter custom_user_email("user_email", "user_email", user_email, 40);
-  WiFiManagerParameter custom_user_password("user_password", "user_password", user_password, 40);
+  WiFiManagerParameter custom_user_password("user_password", "user_password", user_password, 40, "type='password'");
 
   WiFiManager wifiManager;
+  // reset for testing
 	// wifiManager.resetSettings();
 
-  //set config save notify callback
   wifiManager.setSaveConfigCallback(saveConfigCallback);
 
 	wifiManager.addParameter(&custom_user_email);
 	wifiManager.addParameter(&custom_user_password);
-	wifiManager.setCustomHeadElement("<script>document.getElementById('user_password').setAttribute('type','password')</script>");
 
   wifiManager.setAPCallback(configModeCallback);
 
@@ -146,7 +138,6 @@ void setup() {
 	strcpy(user_email, custom_user_email.getValue());
 	strcpy(user_password, custom_user_password.getValue());
 
-  //save the custom parameters to FS
   if (shouldSaveConfig) {
     Serial.println("saving config");
     DynamicJsonBuffer jsonBuffer;
@@ -162,7 +153,6 @@ void setup() {
     json.printTo(Serial);
     json.printTo(configFile);
     configFile.close();
-    //end save
   }
 
 	config.host = FIREBASE_HOST;
