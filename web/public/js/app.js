@@ -17,7 +17,7 @@ configForm.addEventListener('submit', (e)=>{
 	
 	const username = firebase.auth().currentUser.email.split('@')[0];
 	var updates = {};
-	updates['/users/' + username + '/' + configForm.date.value + '/' + configForm.timeset.value] = configForm.duration.value;    
+	updates['/users/' + username + '/' + configForm.esp.value + '/' + configForm.date.value + '/' + configForm.timeset.value] = configForm.duration.value;    
 	firebase.database().ref().update(updates);
 	configForm.reset();
 	configModal.classList.remove('open');
