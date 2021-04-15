@@ -27,7 +27,7 @@ const setupList = (datas) => {
 									<span class="text">date: ${day.date}</span>
 									<div>
 									<span class="text">start: ${config[0]} duration: ${config[1]}</span>
-									<button type="button" onclick="delFunc('${day.date}${config[0]}','${esp.name}','${datas.username}')">delete</buton>
+									<button type="button" onclick="delFunc1('${day.date}${config[0]}','${esp.name}','${datas.username}')">delete</buton>
 									</div>
 									</li>`;
 					}
@@ -38,7 +38,7 @@ const setupList = (datas) => {
 	}
 };
 
-function delFunc(datetime, esp, username) {
+function delFunc1(datetime, esp, username) {
 	firebase.database().ref('users/' + username + '/' + esp + '/' + datetime.slice(0, -9) + '/' + datetime.slice(-9)).remove();
 }
 
