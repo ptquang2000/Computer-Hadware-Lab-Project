@@ -19,6 +19,7 @@ FirebaseAuth auth;
 FirebaseConfig config;
 char user_email[40];
 char user_password[40];
+char user_esp[40];
 strDateTime dateTime;
 NTPtime NTPch("ch.pool.ntp.org");  
 bool shouldSaveConfig = false;
@@ -92,6 +93,7 @@ void setup() {
           Serial.println("\nparsed json");
           strcpy(user_email, json["user_email"]);
 					strcpy(user_password, json["user_password"]);
+          strcpy(user_esp, json["user_esp"]);
         } else {
           Serial.println("failed to load json config");
         }
@@ -103,6 +105,7 @@ void setup() {
   
   WiFiManagerParameter custom_user_email("user_email", "user_email", user_email, 40);
   WiFiManagerParameter custom_user_password("user_password", "user_password", user_password, 40, "type='password'");
+  WiFiManagerParameter custom_user_esp("user_esp", "user_esp", user_esp, 40);
 
   WiFiManager wifiManager;
   // reset for testing
@@ -112,6 +115,7 @@ void setup() {
 
 	wifiManager.addParameter(&custom_user_email);
 	wifiManager.addParameter(&custom_user_password);
+  wifiManager.addParameter(&custom_user_esp);
 
   wifiManager.setAPCallback(configModeCallback);
 
@@ -127,6 +131,7 @@ void setup() {
 
 	strcpy(user_email, custom_user_email.getValue());
 	strcpy(user_password, custom_user_password.getValue());
+	strcpy(user_esp, custom_user_esp.getValue());
 
   if (shouldSaveConfig) {
     Serial.println("saving config");
@@ -134,6 +139,7 @@ void setup() {
     JsonObject& json = jsonBuffer.createObject();
     json["user_email"] = user_email;
     json["user_password"] = user_password;
+    json["user_esp"] = user_esp;
 
     File configFile = SPIFFS.open("/config.json", "w");
     if (!configFile) {
@@ -154,7 +160,7 @@ void setup() {
   Firebase.begin(&config, &auth);
   Firebase.reconnectWiFi(true);
 
-	path = path + getValue(user_email,'@',0);
+	path = path + getValue(user_email,'@',0) + "/" + user_esp;
 
 }
 
