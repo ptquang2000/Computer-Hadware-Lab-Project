@@ -1,0 +1,3 @@
+[submodule "micropython-mqtt-broker"]
+	path = micropython-mqtt-broker
+	url = https://github.com/ptquang2000/micropython-mqtt-broker
