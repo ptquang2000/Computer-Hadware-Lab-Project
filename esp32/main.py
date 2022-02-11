@@ -1,9 +1,9 @@
 SSID = 'Computer Network'
 PASSWORD = '1921681251'
 HOST = ''
-START_TIME = 0
-GTM = 7
+START_TIME = '09:30:00'
 TIMEOUT = None
+GTM = 7
 
 
 def do_connect():
