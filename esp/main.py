@@ -8,6 +8,7 @@ TIMEOUT = None
 
 def do_connect():
     import network
+    global HOST, SSID, PASSWORD
     sta_if = network.WLAN(network.STA_IF)
     if not sta_if.isconnected():
         print('connecting to network...')
@@ -17,7 +18,6 @@ def do_connect():
         while not sta_if.isconnected():
             pass
     print('network config:', sta_if.ifconfig())
-    global HOST
     HOST =  sta_if.ifconfig()[0]
     import ntptime
     import time
@@ -39,6 +39,7 @@ def check_time_format(time):
 
 def sleep_time(start_time):
     import time
+    global GTM
     nums = start_time.split(':')
     start_time = int(nums[0]) * 3600 + int(nums[1]) * 60 +  int(nums[2])
     nums = time.localtime()
@@ -70,18 +71,24 @@ def esp32_setup():
                     raise Exception('Incorrect START_TIME format')
                 start_times.append(start_time)
                 i += 1
-        except KeyError as e:
+        except KeyError:
             if i != 1:
                 START_TIME = min([sleep_time(start_time) for start_time in start_times])
             else:
                 raise OSError
+        finally:
+            db.close()
 
 
 def esp32():
     import machine
     import _thread
+    import os
+    global TIMEOUT, START_TIME, HOST
     _thread.stack_size(16*1024)
     from server import Broker
+    broker = Broker(HOST)
+    broker.start(None)
     try:
         esp32_setup()
     except OSError:
@@ -92,20 +99,56 @@ def esp32():
         print(e)
         TIMEOUT = None
         START_TIME = None
+    if machine.reset_cause() == machine.DEEPSLEEP:
+        print('wake up from deep sleep')
+    elif machine.reset_cause() == 3:
+        print('remove all last config')
+        TIMEOUT = None
+        START_TIME = 0
+        try:
+            os.remove('topic')
+        except:
+            pass
+        try:
+            os.remove('session')
+        except:
+            pass
+        try:
+            os.remove('log')
+        except:
+            pass
+
     print('BROKER TIMEOUT: ', TIMEOUT)
     print('BROKER START TIME AFTER TIMEOUT: ', START_TIME)
-    broker = Broker(HOST)
+    # broker = Broker(HOST)
     if not TIMEOUT:
+        print('CONFIG START')
         broker.start(10)
-        print('Deepsleep indefinitely')
-        machine.deepsleep()
+        print('GET CONFIG')
+        try:
+            esp32_setup()
+            print('START DEEPSLEEP FOR: ', START_TIME)
+            machine.deepsleep(START_TIME)
+        except OSError:
+            machine.reset()
     else:
+        print('BROKER START')
         broker.start(TIMEOUT)
+        print('START DEEPSLEEP FOR: ', START_TIME)
         machine.deepsleep(START_TIME)
 
 
 def esp8266():
-    pass
+    from umqtt.simple import MQTTClient
+    global HOST
+    starttime = None
+    interval = None
+    esp = MQTTClient('valve1', HOST, 1883, keepalive=30)
+    esp.connect(clean_session=True)
+    esp.subscribe(b'valve1/starttime', qos=1)
+    esp.subscribe(b'valve1/interval', qos=1)
+    
+
 
 
 def main():
