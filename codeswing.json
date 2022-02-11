@@ -1,7 +1,0 @@
-{
-  "scripts": [
-    "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.js"
-  ],
-  "styles": []
-}

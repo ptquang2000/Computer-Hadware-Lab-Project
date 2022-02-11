@@ -12,6 +12,7 @@ def do_connect():
     if not sta_if.isconnected():
         print('connecting to network...')
         sta_if.active(True)
+        sta_if.ifconfig(('192.168.0.32', '255.255.255.0', '192.168.0.1', '192.168.0.1'))
         sta_if.connect(SSID, PASSWORD)
         while not sta_if.isconnected():
             pass
@@ -66,7 +67,7 @@ def setup():
 
 def main():
     from server import Broker
-    broker = Broker()
+    broker = Broker(HOST)
     broker.start(TIMEOUT)
     if START_TIME:
         import machine
@@ -77,4 +78,4 @@ def main():
 if __name__ == '__main__':
     do_connect()
     setup()
-    # main()
+    main()
