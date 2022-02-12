@@ -137,20 +137,7 @@ def esp32():
         print('START DEEPSLEEP FOR: ', START_TIME)
         machine.deepsleep(START_TIME)
 
-
-def esp8266():
-    from umqtt.simple import MQTTClient
-    global HOST
-    starttime = None
-    interval = None
-    esp = MQTTClient('valve1', HOST, 1883, keepalive=30)
-    esp.connect(clean_session=True)
-    esp.subscribe(b'valve1/starttime', qos=1)
-    esp.subscribe(b'valve1/interval', qos=1)
-    
-
-
-
+        
 def main():
     import os
     sysname = os.uname().sysname

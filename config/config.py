@@ -1,6 +1,6 @@
 from time import sleep
 import paho.mqtt.client as paho
-broker="192.168.0.32"
+broker="192.168.0.103"
 # broker="127.24.0.4"
 port=1883
 def on_publish(client,userdata,result):
@@ -15,6 +15,7 @@ client1.connect(broker,port)
 ret= client1.publish("broker/starttime/1","16:50:00", retain=True, qos=1)
 ret= client1.publish("broker/starttime/2","07:30:00", retain=True, qos=1)
 ret= client1.publish("broker/timeout","7200", retain=True, qos=1)
-ret= client1.publish("valve1/starttime","14:26:30", retain=True, qos=1)
-ret= client1.publish("valve1/interval","30", retain=True, qos=1)
+ret= client1.publish("valve1/starttime/1","36000", retain=True, qos=1)
+ret= client1.publish("valve1/starttime/2","57600", retain=True, qos=1)
+ret= client1.publish("valve1/duration","60", retain=True, qos=1)
 client1.loop_forever()
